@@ -59,7 +59,7 @@ router.get('/playlist/:id/edit', isAuthenticated, async (req, res) => {
   try {
     const playlist = await playlistModel.findOne({ _id: req.params.id, user: req.user._id });
     if (!playlist) return res.status(403).send("Unauthorized or Playlist not found");
-    res.render('editplaylist', { playlist });
+    res.render('editPlaylist', { playlist });
   } catch (err) {
     res.status(500).send("Error loading edit form");
   }
