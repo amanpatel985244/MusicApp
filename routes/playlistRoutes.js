@@ -54,5 +54,39 @@ router.get("/playlist/:playlistId/deletesong/:songIndex", isAuthenticated, async
   await playlist.save();
   res.redirect(`/playlist/${playlist._id}`);
 });
+// Show Edit Form
+router.get('/playlist/:id/edit', isAuthenticated, async (req, res) => {
+  try {
+    const playlist = await playlistModel.findOne({ _id: req.params.id, user: req.user._id });
+    if (!playlist) return res.status(403).send("Unauthorized or Playlist not found");
+    res.render('editplaylist', { playlist });
+  } catch (err) {
+    res.status(500).send("Error loading edit form");
+  }
+});
+
+// Update Playlist
+router.put('/playlist/:id', isAuthenticated, async (req, res) => {
+  try {
+    const { name } = req.body;
+    await playlistModel.findOneAndUpdate({ _id: req.params.id, user: req.user._id }, { name });
+    res.redirect('/playlists');
+  } catch (err) {
+    res.status(500).send("Error updating playlist");
+  }
+});
+
+// Delete Playlist
+router.delete('/playlist/:id', isAuthenticated, async (req, res) => {
+  try {
+    await playlistModel.findOneAndDelete({ _id: req.params.id, user: req.user._id });
+    res.redirect('/playlists');
+  } catch (err) {
+    res.status(500).send("Error deleting playlist");
+  }
+});
+
+
+
 
 module.exports = router;

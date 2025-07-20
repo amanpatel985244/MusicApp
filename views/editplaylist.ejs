@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Edit Playlist</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-black to-zinc-900 text-white min-h-screen flex items-center justify-center">
+
+  <div class="bg-zinc-800 p-8 rounded-xl shadow-lg w-full max-w-md">
+    <h1 class="text-3xl font-bold mb-6 text-center">✏️ Edit Playlist</h1>
+
+    <form action="/playlist/<%= playlist._id %>?_method=PUT" method="POST" class="space-y-4">
+      <input 
+        type="text" 
+        name="name" 
+        value="<%= playlist.name %>" 
+        required
+        class="w-full px-4 py-2 rounded-md bg-zinc-700 border border-zinc-600 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+
+      <button 
+        type="submit"
+        class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-md font-semibold transition"
+      >
+        💾 Save Changes
+      </button>
+    </form>
+
+    <div class="text-center mt-4">
+      <a href="/playlists" class="text-gray-400 hover:underline">⬅️ Back to Playlists</a>
+    </div>
+  </div>
+
+</body>
+</html>

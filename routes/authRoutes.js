@@ -34,6 +34,8 @@ router.post("/login", async (req, res) => {
   res.redirect("/playlists");
 });
 
+
+
 // GET: Logout
 router.get("/logout", (req, res) => {
   res.clearCookie("userId");
