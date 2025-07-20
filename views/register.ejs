@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Register</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="relative w-full h-screen overflow-hidden flex items-center justify-center text-white">
+
+  <!-- Background Video -->
+  <video autoplay muted loop playsinline class="absolute top-0 left-0 w-full h-full object-cover z-0">
+    <source src="/VN20250719_114234.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+
+  <!-- Glass Overlay -->
+  <div class="absolute top-0 left-0 w-full h-full bg-black/60 backdrop-blur-md z-10"></div>
+
+  <!-- Register Form -->
+  <form action="/register" method="POST"
+    class="z-20 relative bg-black/20 backdrop-blur-lg border border-white/20 shadow-2xl text-white p-6 sm:p-8 rounded-2xl w-full max-w-md mx-4">
+
+    <!-- Title -->
+    <h1 class="text-3xl font-bold text-center mb-6 drop-shadow">🎵 Register</h1>
+
+    <!-- Name -->
+    <input
+      type="text"
+      name="name"
+      placeholder="Name"
+      required
+      class="mb-4 w-full px-4 py-2 rounded bg-black/10 border border-white/30 placeholder-white/80 text-white focus:outline-none focus:ring-2 focus:ring-green-400 backdrop-blur-md"
+    >
+
+    <!-- Email -->
+    <input
+      type="email"
+      name="email"
+      placeholder="Email"
+      required
+      class="mb-4 w-full px-4 py-2 rounded bg-black/10 border border-white/30 placeholder-white/80 text-white focus:outline-none focus:ring-2 focus:ring-green-400 backdrop-blur-md"
+    >
+
+    <!-- Password -->
+    <input
+      type="password"
+      name="password"
+      placeholder="Password"
+      required
+      class="mb-4 w-full px-4 py-2 rounded bg-black/10 border border-white/30 placeholder-white/80 text-white focus:outline-none focus:ring-2 focus:ring-green-400 backdrop-blur-md"
+    >
+
+    <!-- Image URL -->
+    <input
+      type="url"
+      name="imageUrl"
+      placeholder="Profile Image URL (optional)"
+      class="mb-4 w-full px-4 py-2 rounded bg-black/10 border border-white/30 placeholder-white/80 text-white focus:outline-none focus:ring-2 focus:ring-green-400 backdrop-blur-md"
+    >
+
+    <!-- Submit -->
+    <button
+      type="submit"
+      class="w-full bg-green-600 hover:bg-green-700 transition py-2 rounded-xl font-semibold shadow-lg"
+    >
+      Register
+    </button>
+
+    <!-- Footer -->
+    <p class="text-sm mt-4 text-center text-white/90">
+      Already have an account?
+      <a href="/" class="text-blue-400 hover:underline">Login</a>
+    </p>
+
+  </form>
+
+</body>
+</html>

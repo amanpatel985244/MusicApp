@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create Playlist</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="relative min-h-screen w-full overflow-hidden text-white font-sans">
+
+  <!-- 🔹 Background Video -->
+  <video id="bgVideo" autoplay muted loop playsinline class="absolute top-0 left-0 w-full h-full object-cover z-0">
+    <source src="/VN20250720_125841.mp4" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+
+  <!-- 🔹 Glass Overlay -->
+  <div class="absolute top-0 left-0 w-full h-full bg-black/20 backdrop-blur-md z-10"></div>
+
+  <!-- 🔹 Main Content -->
+  <div class="relative z-20 flex items-center justify-center min-h-screen px-4">
+    <div class="bg-zinc-800 bg-opacity-80 p-6 sm:p-8 rounded-xl shadow-lg w-full max-w-md space-y-6">
+
+      <!-- 🔙 Back Button -->
+      <div class="text-center">
+        <a href="/playlists" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded text-sm text-white inline-block transition">
+          ⬅️ Back to Playlists
+        </a>
+      </div>
+
+      <!-- 🎧 Title -->
+      <h1 class="text-2xl sm:text-3xl font-bold text-center">🎧 Create New Playlist</h1>
+
+      <!-- 🎵 Form -->
+      <form action="/create-playlist" method="POST" class="space-y-4">
+        <input 
+          type="text" 
+          name="name" 
+          placeholder="Playlist Name" 
+          required
+          class="w-full px-4 py-2 rounded-md bg-zinc-700 border border-zinc-600 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500"
+        />
+
+        <button 
+          type="submit"
+          class="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-md font-semibold transition"
+        >
+          ➕ Create
+        </button>
+      </form>
+
+    </div>
+  </div>
+
+</body>
+</html>

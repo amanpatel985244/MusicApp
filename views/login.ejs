@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Music App</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="data:,"> <!-- Fix favicon 404 -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+    .hide-nav {
+      transform: translateY(-100%);
+      transition: transform 0.3s ease-in-out;
+    }
+    .show-nav {
+      transform: translateY(0);
+      transition: transform 0.3s ease-in-out;
+  
+}
+
+
+
+  </style>
+</head>
+<body class="bg-zinc-950 text-white font-sans font-[Poppins]">
+
+
+
+ <!-- Navbar -->
+<nav id="navbar" class="fixed top-0 left-0 w-full z-50 bg-white/10 backdrop-blur-md shadow-md px-6 py-4 flex justify-between items-center border-b border-white/10">
+  <!-- Logo -->
+  <h1 class="text-2xl font-bold text-white drop-shadow">🎵 My Music App</h1>
+
+  <!-- Desktop Nav -->
+  <ul class="hidden sm:flex gap-10 text-white text-sm sm:text-base font-medium">
+    <li><a href="#home" class="relative group">Home<span class="absolute left-0 -bottom-1 w-0 h-0.5 bg-blue-400 transition-all duration-300 group-hover:w-full"></span></a></li>
+    <li><a href="#music" class="relative group">Music<span class="absolute left-0 -bottom-1 w-0 h-0.5 bg-blue-400 transition-all duration-300 group-hover:w-full"></span></a></li>
+    <li><a href="#Contact" class="relative group">Contact<span class="absolute left-0 -bottom-1 w-0 h-0.5 bg-blue-400 transition-all duration-300 group-hover:w-full"></span></a></li>
+    <li><a href="#login" class="relative group">Login<span class="absolute left-0 -bottom-1 w-0 h-0.5 bg-blue-400 transition-all duration-300 group-hover:w-full"></span></a></li>
+    <li><a href="/register" class="relative group">Sign up<span class="absolute left-0 -bottom-1 w-0 h-0.5 bg-blue-400 transition-all duration-300 group-hover:w-full"></span></a></li>
+  </ul>
+
+  <!-- Mobile Nav -->
+  <ul class="flex sm:hidden gap-6 text-white text-sm">
+    <li><a href="#login" class="hover:text-blue-400">Login</a></li>
+    <li><a href="/register" class="hover:text-blue-400">Sign up</a></li>
+  </ul>
+</nav>
+
+
+
+  <!-- Home Section -->
+  <section id="home" class="pt-7 min-h-screen relative">
+    <div class="absolute inset-0 w-full h-full -z-10 overflow-hidden">
+      <video id="homeVideo" class="w-full h-full object-cover" autoplay muted loop>
+        <source src="/VN20250719_113949.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+    </div>
+    <div class="flex flex-col items-center justify-center min-h-screen px-4 text-center">
+      <h2 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold mb-4">Welcome to the Music World</h2>
+    </div>
+  </section>
+
+  <!-- Music Section -->
+  <section id="music" class="py-0 px-6 bg-gradient-to-b from-zinc-900 to-zinc-950">
+    <h2 class="text-3xl font-bold mb-10 text-center">🎶 Trending Tracks</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Song Cards -->
+      <div class="bg-zinc-800 p-4 rounded-lg shadow hover:shadow-xl transition">
+        <div class="cursor-pointer"
+             onclick="playVideo(this)"
+             data-thumbnail="https://img.youtube.com/vi/vJQMhj6WYZA/hqdefault.jpg"
+             data-embed="https://www.youtube.com/embed/vJQMhj6WYZA?autoplay=1&modestbranding=1">
+          <img src="https://img.youtube.com/vi/vJQMhj6WYZA/hqdefault.jpg" class="rounded mb-2 w-full" />
+        </div>
+      </div>
+      <div class="bg-zinc-800 p-4 rounded-lg shadow hover:shadow-xl transition">
+        <div class="cursor-pointer"
+             onclick="playVideo(this)"
+             data-thumbnail="https://img.youtube.com/vi/f1h6NZYem0o/hqdefault.jpg"
+             data-embed="https://www.youtube.com/embed/f1h6NZYem0o?autoplay=1&modestbranding=1">
+          <img src="https://img.youtube.com/vi/f1h6NZYem0o/hqdefault.jpg" class="rounded mb-2 w-full" />
+        </div>
+      </div>
+      <div class="bg-zinc-800 p-4 rounded-lg shadow hover:shadow-xl transition">
+        <div class="cursor-pointer"
+             onclick="playVideo(this)"
+             data-thumbnail="https://img.youtube.com/vi/ri1Ar5nEq4s/hqdefault.jpg"
+             data-embed="https://www.youtube.com/embed/ri1Ar5nEq4s?autoplay=1&modestbranding=1">
+          <img src="https://img.youtube.com/vi/ri1Ar5nEq4s/hqdefault.jpg" class="rounded mb-2 w-full" />
+        </div>
+      </div>
+      <div class="bg-zinc-800 p-4 rounded-lg shadow hover:shadow-xl transition">
+        <div class="cursor-pointer"
+             onclick="playVideo(this)"
+             data-thumbnail="https://img.youtube.com/vi/hJBHSmyqv0Y/hqdefault.jpg"
+             data-embed="https://www.youtube.com/embed/hJBHSmyqv0Y?autoplay=1&modestbranding=1">
+          <img src="https://img.youtube.com/vi/hJBHSmyqv0Y/hqdefault.jpg" class="rounded mb-2 w-full" />
+        </div>
+      </div>
+      <div class="bg-zinc-800 p-4 rounded-lg shadow hover:shadow-xl transition">
+        <div class="cursor-pointer"
+             onclick="playVideo(this)"
+             data-thumbnail="https://img.youtube.com/vi/mZQH8CPQ-wo/hqdefault.jpg"
+             data-embed="https://www.youtube.com/embed/mZQH8CPQ-wo?autoplay=1&modestbranding=1">
+          <img src="https://img.youtube.com/vi/mZQH8CPQ-wo/hqdefault.jpg" class="rounded mb-2 w-full" />
+        </div>
+      </div>
+      <div class="bg-zinc-800 p-4 rounded-lg shadow hover:shadow-xl transition">
+        <div class="cursor-pointer"
+             onclick="playVideo(this)"
+             data-thumbnail="https://img.youtube.com/vi/SNcmsQTZUKw/hqdefault.jpg"
+             data-embed="https://www.youtube.com/embed/SNcmsQTZUKw?autoplay=1&modestbranding=1">
+          <img src="https://img.youtube.com/vi/SNcmsQTZUKw/hqdefault.jpg" class="rounded mb-2 w-full" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+<!-- Login Page with Video Background -->
+<section id="login" class="relative w-full h-screen overflow-hidden flex items-center justify-center">
+
+  <!-- Video Background -->
+  <video autoplay muted loop playsinline class="absolute top-0 left-0 w-full h-full object-cover z-0">
+    <source src="/VN20250719_114234.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+
+ <!-- Glass Overlay -->
+  <div class="absolute top-0 left-0 w-full h-full bg-black/60 backdrop-blur-md z-10"></div>
+
+  <!-- Login Form -->
+  <form action="/login" method="POST" class="z-20 relative bg-black-900 backdrop-blur-lg border border-black/20 shadow-xl text-white p-6 sm:p-8 rounded-2xl w-full max-w-md mx-4">
+    <h2 class="text-3xl font-bold text-center mb-6 drop-shadow">🎵 Login</h2>
+
+    <input type="email" name="email" placeholder="Email" required
+      class="mb-4 w-full px-4 py-2 rounded bg-black/10 border border-white/30 placeholder-white/80 text-white focus:outline-none focus:ring-2 focus:ring-blue-400 backdrop-blur-md">
+    
+    <input type="password" name="password" placeholder="Password" required
+      class="mb-4 w-full px-4 py-2 rounded bg-black/10 border border-white/30 placeholder-white/80 text-white focus:outline-none focus:ring-2 focus:ring-blue-400 backdrop-blur-md">
+
+    <button type="submit"
+      class="w-full bg-blue-600 hover:bg-blue-700 transition py-2 rounded-xl font-semibold shadow-lg">Login</button>
+
+    <p class="text-sm mt-4 text-center text-white/90">Don't have an account?
+      <a href="/register" class="text-blue-400 hover:underline">Register</a>
+    </p>
+  </form>
+</section>
+
+<!--Footer section-->
+<footer id="Contact" class="bg-zinc-900 text-gray-400 text-sm ">
+  <div class="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
+
+    <!-- Logo / About -->
+    <div>
+      <h2 class="text-white text-lg font-bold mb-3">🎵 Musicify</h2>
+      <p class="leading-relaxed text-gray-400">
+        Your personal music playlist manager. Stream and organize your favorite tracks with ease and joy.
+      </p>
+    </div>
+
+    <!-- Quick Links -->
+    <div>
+  <h2 class="text-white text-lg font-semibold mb-3">Quick Links</h2>
+  <ul class="space-y-2">
+    <li><a href="#login" class="footer-link hover:text-white transition" data-requires-login="true">My Playlists</a></li>
+    <li><a href="#login" class="footer-link hover:text-white transition" data-requires-login="true">Create Playlist</a></li>
+    <li><a href="#login" class="footer-link hover:text-white transition" data-requires-login="true">Profile</a></li>
+    <li><a href="#login" class="footer-link hover:text-white transition" data-requires-login="true">Contact Us</a></li>
+  </ul>
+</div>
+
+
+    <!-- Resources -->
+    <div>
+      <h2 class="text-white text-lg font-semibold mb-3">Resources</h2>
+      <ul class="space-y-2">
+        <li><a href="#" class="hover:text-white transition">Help Center</a></li>
+        <li><a href="#" class="hover:text-white transition">Privacy Policy</a></li>
+        <li><a href="#" class="hover:text-white transition">Terms & Conditions</a></li>
+        <li><a href="#" class="hover:text-white transition">FAQs</a></li>
+      </ul>
+    </div>
+
+    <!-- Social Media -->
+    <div>
+      <h2 class="text-white text-lg font-semibold mb-3">Connect With Us</h2>
+      <div class="flex flex-wrap gap-4">
+        <a href="http://deals-production.up.railway.app" class="hover:text-white transition">🌐 Website</a>
+        <a href="https://www.linkedin.com/in/amanpatel1568?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" class="hover:text-white transition">🌐 LinkedIn</a>
+        <a href="https://www.facebook.com/profile.php?id=100025505490739" class="hover:text-white transition">📘 Facebook</a>
+        <a href="https://www.instagram.com/_aman_patel/" class="hover:text-white transition">📸 Instagram</a>
+        <a href="https://www.youtube.com/@AmanPatel-kj4wu" class="hover:text-white transition">▶️ YouTube</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Divider -->
+  <div class="border-t border-zinc-700">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex flex-col sm:flex-row justify-between items-center text-xs text-zinc-500">
+      <span>© 2025 Musicify. All rights reserved.</span>
+      <span class="mt-2 sm:mt-0">Made with ❤️ for music lovers</span>
+    </div>
+  </div>
+</footer>
+
+  <!-- JavaScript -->
+<script src="/javascript/login.js"></script>
+</body>
+</html>

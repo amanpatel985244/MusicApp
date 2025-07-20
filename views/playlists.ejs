@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Your Playlists</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .disabled {
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    @keyframes slideInFade {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fade-in {
+      animation: slideInFade 0.6s ease-out;
+    }
+  </style>
+</head>
+<body class="relative w-full min-h-screen overflow-x-hidden text-white font-sans">
+
+ <!-- 🔹 Background Video -->
+<video id="bgVideo" autoplay muted loop playsinline class="absolute top-0 left-0 w-full h-full object-cover z-0">
+  <source src="/VN20250720_125841.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
+
+
+
+  <!-- 🔹 Glass Overlay -->
+  <div class="absolute top-0 left-0 w-full h-full bg-black/10 backdrop-blur-md backdrop-md z-10"></div>
+
+  <!-- 🔹 Main Content -->
+  <div class="relative z-20 px-4 sm:px-6 md:px-10 py-8 fade-in">
+
+    <!-- Header with User Info & Logout -->
+    <div class="relative mb-8">
+
+  <!-- Logout -->
+<a href="/logout"
+   class="absolute top-4 right-6 text-sm text-red-500 hover:underline font-medium transition duration-200">
+  Logout
+</a>
+
+
+      <!-- User Info -->
+      <div class="flex items-center gap-4  top-0 p-3 ">
+        <img src="<%= user.image || 'https://via.placeholder.com/40' %>" alt="Profile"
+             class="w-12 h-12 rounded-full object-cover border-2 border-white" />
+        <div>
+          <p class="text-lg font-semibold"><%= user.name %></p>
+          <a href="/edit" class="text-sm text-blue-400 hover:underline">✏️ Edit Profile</a>
+        </div>
+      </div>
+      <hr>
+    </div>
+
+    <!-- Create Playlist -->
+    <div class="mb-8 text-center sm:text-left py-1">
+      <a href="/playlist/new"
+         class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-full transition inline-block text-center shadow-md">
+        ➕ New Playlist
+      </a>
+    </div>
+
+    <!-- Playlists Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+      <% playlists.forEach((playlist, i) => { %>
+        <div class="bg-black/30 backdrop-blur-lg border border-white/20 p-5 sm:p-6 rounded-2xl shadow-xl hover:shadow-2xl transition relative group">
+
+          <!-- Playlist Title -->
+          <a href="/playlist/<%= playlist._id %>" class="block hover:underline">
+            <h2 class="text-xl sm:text-2xl font-bold text-white"><%= playlist.name %></h2>
+          </a>
+          <p class="text-sm text-gray-300 mb-3"><%= playlist.songs.length %> song(s)</p>
+
+          <!-- Play Button -->
+          <button onclick="togglePlay(<%= i %>); event.stopPropagation();"
+                  id="playBtn-<%= i %>"
+                  class="bg-blue-600 hover:bg-blue-700 px-4 py-1 rounded-full text-white font-medium transition w-full sm:w-auto shadow">
+            ▶️ Play
+          </button>
+
+          <!-- Controls -->
+          <div id="controls-<%= i %>" class="hidden mt-4">
+            <p class="mb-2 text-sm text-green-400 font-semibold" id="songTitle-<%= i %>">Playing: </p>
+            <div class="flex items-center gap-2">
+              <button id="prevBtn-<%= i %>" onclick="prevSong(<%= i %>); event.stopPropagation();"
+                      class="bg-gray-700 px-3 py-1 rounded">⏮</button>
+              <button id="nextBtn-<%= i %>" onclick="nextSong(<%= i %>); event.stopPropagation();"
+                      class="bg-gray-700 px-3 py-1 rounded">⏭</button>
+            </div>
+          </div>
+
+          <!-- Audio Player -->
+          <audio id="audioPlayer-<%= i %>" class="hidden mt-4 w-full" controls></audio>
+
+          <!-- JS Playlist Array -->
+          <script>
+            window.playlists = window.playlists || [];
+            window.playlists[<%= i %>] = <%- JSON.stringify(playlist.songs) %>;
+          </script>
+        </div>
+      <% }) %>
+    </div>
+
+  </div>
+
+  <!-- JS for Player -->
+  <script src="/javascript/playlists.js"></script>
+</body>
+</html>
