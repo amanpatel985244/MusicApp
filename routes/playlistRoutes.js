@@ -28,12 +28,26 @@ router.get("/playlist/:id", isAuthenticated, async (req, res) => {
   res.render("readPlaylist", { playlist });
 });
 
-// Add song to playlist
 router.post("/playlist/:id/add-song", isAuthenticated, async (req, res) => {
   const playlist = await playlistModel.findOne({ _id: req.params.id, user: req.user._id });
   if (!playlist) return res.status(403).send("Unauthorized");
 
-  const { url } = req.body;
+  let { url } = req.body;
+
+  // Normalize YouTube app links to web format
+  // Handle youtu.be links
+  if (url.includes("youtu.be/")) {
+    const videoId = url.split("youtu.be/")[1].split(/[?&]/)[0];
+    url = `https://www.youtube.com/watch?v=${videoId}`;
+  }
+  // Handle youtube:// links
+  if (url.startsWith("youtube://")) {
+    const match = url.match(/v=([a-zA-Z0-9_-]+)/);
+    if (match) {
+      url = `https://www.youtube.com/watch?v=${match[1]}`;
+    }
+  }
+
   try {
     const { data } = await axios.get(`https://www.youtube.com/oembed?url=${url}&format=json`);
     playlist.songs.push({ title: data.title, url });
@@ -47,10 +61,12 @@ router.post("/playlist/:id/add-song", isAuthenticated, async (req, res) => {
 // Delete song from playlist
 router.get("/playlist/:playlistId/deletesong/:songIndex", isAuthenticated, async (req, res) => {
   const playlist = await playlistModel.findOne({ _id: req.params.playlistId, user: req.user._id });
-  if (!playlist || req.params.songIndex >= playlist.songs.length) {
-    return res.send("Song not found or Unauthorized");
+  const songIndex = parseInt(req.params.songIndex, 10);
+
+  if (!playlist || isNaN(songIndex) || songIndex < 0 || songIndex >= playlist.songs.length) {
+    return res.status(404).send("Song not found or Unauthorized");
   }
-  playlist.songs.splice(req.params.songIndex, 1);
+  playlist.songs.splice(songIndex, 1);
   await playlist.save();
   res.redirect(`/playlist/${playlist._id}`);
 });

@@ -106,7 +106,20 @@ window.playOnlyThis = function(index, embedUrl, thumbUrl) {
   playSongWithVideo(index, document.getElementById("globalPlayBtn"), document.getElementById("nowPlayingLabel"));
 };
 
+// Supports web, youtu.be, and youtube:// links
 function getVideoIdFromUrl(url) {
+  // Handle youtu.be links
+  if (url.includes("youtu.be/")) {
+    return url.split("youtu.be/")[1].split(/[?&]/)[0];
+  }
+  // Handle youtube:// links
+  if (url.startsWith("youtube://")) {
+    const match = url.match(/v=([a-zA-Z0-9_-]+)/);
+    if (match) {
+      return match[1];
+    }
+  }
+  // Handle standard web links
   try {
     const urlObj = new URL(url);
     return urlObj.searchParams.get('v');
