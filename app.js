@@ -38,7 +38,10 @@ app.use("/", userRoutes);
 app.use("/", playlistRoutes);
 app.use("/", streamRoutes);
 app.use("/", playlistRoutes);
-
+app.use((req, res, next) => {
+  res.setHeader("Content-Security-Policy", "script-src 'self' https://cdn.tailwindcss.com https://www.youtube.com;");
+  next();
+});
 
 // Start server
 const PORT = process.env.PORT || 3000;

@@ -1,47 +1,135 @@
-    let currentPlaying = null;
+let currentSongIndex = 0;
+let isPlaylistPlaying = false;
+let currentPlayer = null;
 
-    function playOnlyThis(index, embedUrl, thumbUrl) {
-      // Pause previous video and restore its thumbnail
-      if (currentPlaying !== null && currentPlaying !== index) {
-        restoreThumbnail(currentPlaying);
+window.addEventListener("DOMContentLoaded", () => {
+  const globalBtn = document.getElementById("globalPlayBtn");
+  const nowPlayingLabel = document.getElementById("nowPlayingLabel");
+  const nextBtn = document.getElementById("nextBtn");
+  const prevBtn = document.getElementById("prevBtn");
+
+  if (globalBtn) {
+    globalBtn.addEventListener("click", () => togglePlayPause(globalBtn, nowPlayingLabel));
+  }
+  if (nextBtn) {
+    nextBtn.addEventListener("click", () => nextSong(globalBtn, nowPlayingLabel));
+  }
+  if (prevBtn) {
+    prevBtn.addEventListener("click", () => prevSong(globalBtn, nowPlayingLabel));
+  }
+
+  // Load YouTube IFrame API
+  let tag = document.createElement('script');
+  tag.src = "https://www.youtube.com/iframe_api";
+  document.body.appendChild(tag);
+});
+
+function togglePlayPause(globalBtn, nowPlayingLabel) {
+  if (!isPlaylistPlaying) {
+    playSongWithVideo(currentSongIndex, globalBtn, nowPlayingLabel);
+  } else if (currentPlayer) {
+    currentPlayer.pauseVideo();
+    isPlaylistPlaying = false;
+    globalBtn.textContent = "▶️ Play Playlist";
+    nowPlayingLabel.textContent = "";
+    removeHighlight(currentSongIndex);
+  }
+}
+
+function playSongWithVideo(index, globalBtn, nowPlayingLabel) {
+  if (!playlist[index]) return;
+  currentSongIndex = index;
+  isPlaylistPlaying = true;
+
+  globalBtn.textContent = "⏸️ Pause";
+  nowPlayingLabel.textContent = `🎶 Playing: ${playlist[index].title}`;
+
+  highlightCurrentSong(index);
+  showVideo(index);
+}
+
+function showVideo(index) {
+  if (currentPlayer) {
+    currentPlayer.destroy();
+    currentPlayer = null;
+  }
+  const container = document.getElementById(`video-container-${index}`);
+  if (!container) return;
+
+  const videoId = getVideoIdFromUrl(playlist[index].url);
+
+  // Only replace the video-container, not the whole card
+  container.innerHTML = `<div id="ytplayer-${index}"></div>`;
+
+  window.onYouTubeIframeAPIReady = function() {
+    currentPlayer = new YT.Player(`ytplayer-${index}`, {
+      height: '200',
+      width: '100%',
+      videoId: videoId,
+      playerVars: { autoplay: 1, modestbranding: 1, rel: 0 },
+      events: {
+        'onStateChange': (event) => {
+          if (event.data === YT.PlayerState.ENDED) {
+            removeHighlight(currentSongIndex);
+            nextSong(document.getElementById("globalPlayBtn"), document.getElementById("nowPlayingLabel"));
+          }
+        }
       }
+    });
+  };
+  // If API already loaded
+  if (window.YT && window.YT.Player) {
+    window.onYouTubeIframeAPIReady();
+  }
+}
 
-      const container = document.getElementById(`video-container-${index}`);
-      const card = document.getElementById(`card-${index}`);
+function nextSong(globalBtn, nowPlayingLabel) {
+  if (currentSongIndex < playlist.length - 1) {
+    removeHighlight(currentSongIndex);
+    playSongWithVideo(currentSongIndex + 1, globalBtn, nowPlayingLabel);
+  } else {
+    // Loop: play from the first song again
+    removeHighlight(currentSongIndex);
+    playSongWithVideo(0, globalBtn, nowPlayingLabel);
+  }
+}
 
-      // If same card is clicked again, toggle back to thumbnail
-      if (currentPlaying === index) {
-        restoreThumbnail(index);
-        currentPlaying = null;
-        return;
-      }
+function prevSong(globalBtn, nowPlayingLabel) {
+  if (currentSongIndex > 0) {
+    removeHighlight(currentSongIndex);
+    playSongWithVideo(currentSongIndex - 1, globalBtn, nowPlayingLabel);
+  }
+}
 
-      // Replace thumbnail with iframe
-      container.outerHTML = `
-        <div class="w-full" id="video-container-${index}">
-          <iframe width="100%" height="200" src="${embedUrl}" frameborder="0"
-            allow="autoplay; encrypted-media" allowfullscreen class="rounded-t-xl"></iframe>
-        </div>
-      `;
+window.playOnlyThis = function(index, embedUrl, thumbUrl) {
+  removeHighlight(currentSongIndex);
+  playSongWithVideo(index, document.getElementById("globalPlayBtn"), document.getElementById("nowPlayingLabel"));
+};
 
-      currentPlaying = index;
-    }
+function getVideoIdFromUrl(url) {
+  try {
+    const urlObj = new URL(url);
+    return urlObj.searchParams.get('v');
+  } catch {
+    return null;
+  }
+}
 
-    function restoreThumbnail(index) {
-      const container = document.getElementById(`video-container-${index}`);
-      const embedUrl = container.querySelector("iframe")?.src;
-      const videoId = embedUrl?.split("/embed/")[1]?.split("?")[0];
-      const thumb = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+// Highlight the current song card
+function highlightCurrentSong(index) {
+  document.querySelectorAll('.video-card').forEach(card => {
+    card.classList.remove('current-song');
+  });
+  const currentCard = document.getElementById(`card-${index}`);
+  if (currentCard) {
+    currentCard.classList.add('current-song');
+  }
+}
 
-      container.outerHTML = `
-        <div class="relative cursor-pointer" id="video-container-${index}"
-             onclick="playOnlyThis(${index}, 'https://www.youtube.com/embed/${videoId}?autoplay=1&modestbranding=1&rel=0', '${thumb}')">
-          <img src="${thumb}" class="w-full h-48 object-cover" />
-          <div class="play-overlay absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
-            <svg class="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M8 5v14l11-7z" />
-            </svg>
-          </div>
-        </div>
-      `;
-    }
+// Remove highlight from song card
+function removeHighlight(index) {
+  const currentCard = document.getElementById(`card-${index}`);
+  if (currentCard) {
+    currentCard.classList.remove('current-song');
+  }
+}
