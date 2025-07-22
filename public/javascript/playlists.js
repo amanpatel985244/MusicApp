@@ -161,11 +161,26 @@ function resetPlayer(index) {
   scheduleUnmuteVideo();
 }
 
-
-
-
-
-// 🔹 Convert YouTube link to streamable audio
 function getStreamableAudio(youtubeUrl) {
-  return `/stream-audio?url=${encodeURIComponent(youtubeUrl)}`;
+  try {
+    const urlObj = new URL(youtubeUrl);
+    const videoId = urlObj.searchParams.get('v');
+    if (!videoId) return null;
+
+    const cleanUrl = `https://www.youtube.com/watch?v=${videoId}`;
+
+    const baseUrl =
+      window.location.hostname === 'localhost'
+        ? 'http://localhost:8080'
+        : '';
+
+    return `${baseUrl}/stream-audio?url=${encodeURIComponent(cleanUrl)}`;
+  } catch (err) {
+    console.error('Invalid YouTube URL:', youtubeUrl);
+    return null;
+  }
 }
+
+
+
+

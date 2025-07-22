@@ -1,21 +1,45 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const { spawn } = require("child_process");
+const { spawn } = require('child_process');
+const { PassThrough } = require('stream');
 
-router.get("/stream-audio", async (req, res) => {
-  const videoUrl = req.query.url;
-  if (!videoUrl) return res.status(400).send("No URL provided");
+router.get('/stream-audio', async (req, res) => {
+  const url = req.query.url;
 
-  res.set({
-    "Content-Type": "audio/mpeg",
-    "Transfer-Encoding": "chunked",
-  });
+  if (!url || !url.includes("youtube.com/watch?v=")) {
+    return res.status(400).send("Invalid YouTube URL");
+  }
 
-  const ytdlp = spawn("yt-dlp", ["-f", "bestaudio", "-o", "-", videoUrl]);
+  try {
+    console.log("🔹 Requested:", url);
 
-  ytdlp.stdout.pipe(res);
-  ytdlp.stderr.on("data", (data) => console.error(`yt-dlp error: ${data}`));
-  ytdlp.on("close", () => res.end());
+    const stream = new PassThrough();
+
+    // Use spawn to run yt-dlp directly
+    const ytdlpProcess = spawn('yt-dlp', [
+      '-f', 'bestaudio',
+      '-o', '-',
+      url
+    ]);
+
+    ytdlpProcess.stdout.pipe(stream);
+
+    res.setHeader('Content-Type', 'audio/mpeg');
+    stream.pipe(res);
+
+    ytdlpProcess.stderr.on('data', (data) => {
+      console.error("yt-dlp stderr:", data.toString());
+    });
+
+    ytdlpProcess.on('error', (err) => {
+      console.error("❌ yt-dlp error:", err);
+      res.status(500).send("Failed to stream audio");
+    });
+
+  } catch (err) {
+    console.error("❌ Error:", err);
+    res.status(500).send("Failed to stream audio");
+  }
 });
 
 module.exports = router;
