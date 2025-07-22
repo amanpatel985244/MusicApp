@@ -1,4 +1,4 @@
-FROM node:20
+FROM node:20-bullseye
 
 # Install yt-dlp and ffmpeg
 RUN apt-get update && \
@@ -10,4 +10,4 @@ COPY . .
 
 RUN npm install
 
-CMD ["node", "server.js"]
+CMD ["node", "app.js"]
