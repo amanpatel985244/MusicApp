@@ -16,11 +16,12 @@ router.get('/stream-audio', async (req, res) => {
     const stream = new PassThrough();
 
     // Use spawn to run yt-dlp directly
-    const ytdlpProcess = spawn('yt-dlp', [
-      '-f', 'bestaudio',
-      '-o', '-',
-      url
-    ]);
+   const ytdlpProcess = spawn('yt-dlp', [
+  '-f', 'bestaudio',
+  '-o', '-',
+  '--cookies', 'cookies.txt', // <-- Add this line
+  url
+]);
 
     ytdlpProcess.stdout.pipe(stream);
 
