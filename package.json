@@ -12,6 +12,7 @@
   "dependencies": {
     "axios": "^1.10.0",
     "bcrypt": "^6.0.0",
+    "cheerio": "^1.1.2",
     "cookie-parser": "^1.4.7",
     "dotenv": "^17.2.0",
     "ejs": "^3.1.10",
@@ -22,7 +23,9 @@
     "nodemon": "^3.1.10",
     "path": "^0.12.7",
     "play-dl": "^1.9.7",
+    "puppeteer": "^24.15.0",
     "schema": "^0.2.1",
-    "youtube-dl-exec": "^3.0.22"
+    "youtube-dl-exec": "^3.0.22",
+    "ytdl-core": "^4.11.5"
   }
 }

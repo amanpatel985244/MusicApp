@@ -7,15 +7,25 @@
   <link rel="icon" type="image/png" href="/favicon.png">
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
+    body {
+      background-color: #0f0f0f;
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    
+    }
+
     .thumbnail:hover .play-overlay {
       opacity: 1;
     }
+
     .play-overlay {
       transition: opacity 0.3s ease;
       opacity: 0;
     }
+
     .video-card {
-      background-color: #0f0f0f;
+      background-color: rgba(15, 15, 15, 0.85);
       border-radius: 1rem;
       overflow: hidden;
       box-shadow: 0 2px 8px rgba(0,0,0,0.2);
@@ -24,16 +34,23 @@
       flex-direction: column;
       height: 100%;
     }
+
     .current-song {
       border: 2px solid #38bdf8;
       box-shadow: 0 0 10px #38bdf8;
     }
+
+    @media (min-width: 640px) {
+      .mobile-nav {
+        display: none;
+      }
+    }
   </style>
 </head>
-<body class="bg-zinc-950 text-white min-h-screen font-sans">
+<body class="text-white min-h-screen font-sans pb-24">
 
   <!-- Header -->
-  <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center px-4 sm:px-6 py-4 bg-zinc-900 shadow gap-3 sm:gap-0">
+  <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center px-4 sm:px-6 py-4 bg-zinc-900 bg-opacity-80 shadow gap-3 sm:gap-0">
     <h1 class="text-xl sm:text-2xl font-bold">🎵 Playlist: <%= playlist.name %></h1>
     <a href="/playlists" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded text-sm text-white text-center">
       ⬅️ Back to Playlists
@@ -72,7 +89,7 @@
         <button id="nextBtn" class="bg-gray-700 hover:bg-gray-800 px-4 py-2 rounded text-white">
           ⏭️ Next
         </button>
-        <p class="text-sm text-gray-400" id="nowPlayingLabel"></p>
+        <p class="text-sm text-gray-300" id="nowPlayingLabel"></p>
       </div>
 
       <!-- Song Cards Grid -->
@@ -109,13 +126,53 @@
     <% } %>
   </section>
 
-  <!-- Audio Element (not used for video playback, but kept for future use) -->
+  <!-- Hidden Audio Element -->
   <audio id="audioPlayer" hidden></audio>
 
-  <!-- Inject Playlist for JS -->
+  <!-- Inject JS Playlist -->
   <script>
     const playlist = <%- JSON.stringify(playlist.songs) %>;
   </script>
   <script src="/javascript/readplaylist.js"></script>
+
+<!-- ✅ Bottom Navigation for Mobile -->
+<nav class="mobile-nav fixed bottom-0 left-0 w-full bg-black/90 text-white border-t border-white/10 backdrop-blur-md z-50">
+  <div class="flex justify-around items-center py-2 text-xs">
+    
+    <!-- Home / Playlists -->
+    <a href="/playlists" class="flex flex-col items-center hover:text-blue-400 transition">
+      <svg class="w-6 h-6 mb-1" fill="currentColor" viewBox="0 0 20 20">
+        <path d="M10 2L2 8h2v8h4v-5h4v5h4V8h2L10 2z"/>
+      </svg>
+      <span>Playlists</span>
+    </a>
+
+    <!-- Create Playlist -->
+    <a href="/playlist/new" class="flex flex-col items-center hover:text-blue-400 transition">
+      <svg class="w-6 h-6 mb-1" fill="currentColor" viewBox="0 0 20 20">
+        <path d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"/>
+      </svg>
+      <span>Create</span>
+    </a>
+
+    <!-- Profile -->
+    <a href="/edit" class="flex flex-col items-center hover:text-blue-400 transition">
+      <svg class="w-6 h-6 mb-1" fill="currentColor" viewBox="0 0 20 20">
+        <path d="M10 2a5 5 0 100 10 5 5 0 000-10zM2 18a8 8 0 0116 0H2z"/>
+      </svg>
+      <span>Profile</span>
+    </a>
+
+    <!-- Logout -->
+    <a href="/logout" class="flex flex-col items-center text-red-500 hover:text-red-400 transition">
+      <svg class="w-6 h-6 mb-1" fill="currentColor" viewBox="0 0 20 20">
+        <path d="M3 4a1 1 0 011-1h6a1 1 0 110 2H5v10h5a1 1 0 110 2H4a1 1 0 01-1-1V4zm11.293 3.707a1 1 0 010 1.414L12.414 11H17a1 1 0 110 2h-4.586l1.879 1.879a1 1 0 01-1.414 1.414l-3.586-3.586a1 1 0 010-1.414l3.586-3.586a1 1 0 011.414 0z"/>
+      </svg>
+      <span>Logout</span>
+    </a>
+  </div>
+</nav>
+
+
 </body>
 </html>

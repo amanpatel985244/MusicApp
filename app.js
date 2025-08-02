@@ -2,6 +2,7 @@ const express = require("express");
 const cookieParser = require("cookie-parser");
 const path = require("path");
 const dotenv = require('dotenv');
+const crypto = require("node:crypto");
 dotenv.config(); // 👈 Loads .env automatically
 
 
@@ -42,6 +43,18 @@ app.use((req, res, next) => {
   res.setHeader("Content-Security-Policy", "script-src 'self' https://cdn.tailwindcss.com https://www.youtube.com;");
   next();
 });
+
+
+app.use((req, res, next) => {
+  const nonce = crypto.randomBytes(16).toString('base64');
+  res.locals.nonce = nonce;
+  res.setHeader(
+    "Content-Security-Policy",
+    `default-src 'self'; script-src 'self' https://cdn.tailwindcss.com https://www.youtube.com 'nonce-${nonce}';`
+  );
+  next();
+});
+
 
 // Start server
 const PORT = process.env.PORT || 3000;

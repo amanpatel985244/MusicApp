@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>Your Playlists</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="icon" type="image/png" href="/favicon.png">
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     .disabled {
@@ -26,39 +26,45 @@
     .fade-in {
       animation: slideInFade 0.6s ease-out;
     }
+
+    @media (min-width: 640px) {
+      .mobile-nav {
+        display: none;
+      }
+    }
   </style>
 </head>
-<body class="relative w-full min-h-screen overflow-x-hidden text-white font-sans">
+<body class="relative w-full min-h-screen overflow-x-hidden text-white font-sans bg-gradient-to-br from-black via-zinc-900 to-gray-900">
 
-  <!-- 🔹 Background Video -->
-  <video id="bgVideo" autoplay muted loop playsinline class="absolute top-0 left-0 w-full h-full object-cover z-0">
-    <source src="/VN20250720_125841.mp4" type="video/mp4" />
-    Your browser does not support the video tag.
-  </video>
+<!-- 🔹 Header -->
+<header class="flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-6 px-4 sm:px-6 md:px-10 pt-6 pb-4">
+  <!-- Playlist Title with Icon -->
+  <div class="flex items-center gap-3">
+  
+    <h1 class="text-2xl font-bold">Your Playlists</h1>
+  </div>
 
-  <!-- 🔹 Glass Overlay -->
-  <div class="absolute top-0 left-0 w-full h-full bg-black/10 backdrop-blur-md backdrop-md z-10"></div>
+  <!-- User Info -->
+  <div class="flex items-center gap-3 sm:ml-auto">
+    <img src="<%= user.image || 'https://via.placeholder.com/40' %>" alt="Profile"
+         class="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover border-2 border-white" />
+    <div class="text-sm sm:text-base">
+      <p class="font-semibold"><%= user.name %></p>
+      <a href="/edit" class="text-blue-400 hover:underline text-xs sm:text-sm">✏️ Edit Profile</a>
+    </div>
+    
+    <!-- ✅ Hide logout on mobile -->
+    <a href="/logout"
+       class="hidden sm:inline-block ml-2 text-xs sm:text-sm text-red-500 hover:underline font-medium transition duration-200">
+      Logout
+    </a>
+  </div>
+</header>
+<hr class="border-white/20 mb-6 mx-4 sm:mx-6 md:mx-10">
+
 
   <!-- 🔹 Main Content -->
-  <div class="relative z-20 px-4 sm:px-6 md:px-10 py-8 fade-in">
-
-    <!-- Header with User Info & Logout -->
-    <div class="relative mb-8">
-      <a href="/logout"
-        class="absolute top-4 right-6 text-sm text-red-500 hover:underline font-medium transition duration-200">
-        Logout
-      </a>
-
-      <div class="flex items-center gap-4 p-3">
-        <img src="<%= user.image || 'https://via.placeholder.com/40' %>" alt="Profile"
-             class="w-12 h-12 rounded-full object-cover border-2 border-white" />
-        <div>
-          <p class="text-lg font-semibold"><%= user.name %></p>
-          <a href="/edit" class="text-sm text-blue-400 hover:underline">✏️ Edit Profile</a>
-        </div>
-      </div>
-      <hr>
-    </div>
+  <div class="relative z-10 px-4 sm:px-6 md:px-10 fade-in pb-24">
 
     <!-- Create Playlist -->
     <div class="mb-8 text-center sm:text-left py-1">
@@ -89,13 +95,6 @@
             </form>
           </div>
 
-          <!-- Play Button -->
-          <!-- <button onclick="togglePlay(<%= i %>); event.stopPropagation();"
-                  id="playBtn-<%= i %>"
-                  class="bg-blue-600 hover:bg-blue-700 px-4 py-1 rounded-full text-white font-medium transition w-full sm:w-auto shadow">
-            ▶️ Play
-          </button> -->
-
           <!-- Controls -->
           <div id="controls-<%= i %>" class="hidden mt-4">
             <p class="mb-2 text-sm text-green-400 font-semibold" id="songTitle-<%= i %>">Playing: </p>
@@ -120,7 +119,48 @@
     </div>
   </div>
 
-  <!-- Player Script -->
+<!-- ✅ Bottom Navigation for Mobile -->
+<nav class="mobile-nav fixed bottom-0 left-0 w-full bg-black/90 text-white border-t border-white/10 backdrop-blur-md z-50">
+  <div class="flex justify-around items-center py-2 text-xs">
+
+    <!-- Home / Playlists -->
+    <a href="/playlists" class="flex flex-col items-center hover:text-blue-400 transition">
+      <svg class="w-6 h-6 mb-1" fill="currentColor" viewBox="0 0 20 20">
+        <path d="M10 2L2 8h2v8h4v-5h4v5h4V8h2L10 2z"/>
+      </svg>
+      <span>Playlists</span>
+    </a>
+
+    <!-- Create Playlist -->
+    <a href="/playlist/new" class="flex flex-col items-center hover:text-blue-400 transition">
+      <svg class="w-6 h-6 mb-1" fill="currentColor" viewBox="0 0 20 20">
+        <path d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"/>
+      </svg>
+      <span>Create</span>
+    </a>
+
+  
+
+    <!-- Profile -->
+    <a href="/edit" class="flex flex-col items-center hover:text-blue-400 transition">
+      <svg class="w-6 h-6 mb-1" fill="currentColor" viewBox="0 0 20 20">
+        <path d="M10 2a5 5 0 100 10 5 5 0 000-10zM2 18a8 8 0 0116 0H2z"/>
+      </svg>
+      <span>Profile</span>
+    </a>
+
+    <!-- Logout -->
+    <a href="/logout" class="flex flex-col items-center text-red-500 hover:text-red-400 transition">
+      <svg class="w-6 h-6 mb-1" fill="currentColor" viewBox="0 0 20 20">
+        <path d="M3 4a1 1 0 011-1h6a1 1 0 110 2H5v10h5a1 1 0 110 2H4a1 1 0 01-1-1V4zm11.293 3.707a1 1 0 010 1.414L12.414 11H17a1 1 0 110 2h-4.586l1.879 1.879a1 1 0 01-1.414 1.414l-3.586-3.586a1 1 0 010-1.414l3.586-3.586a1 1 0 011.414 0z"/>
+      </svg>
+      <span>Logout</span>
+    </a>
+  </div>
+</nav>
+
+
+  <!-- JS -->
   <script src="/javascript/playlists.js"></script>
 </body>
 </html>
