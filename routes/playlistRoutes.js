@@ -71,14 +71,11 @@ router.get("/playlist/:playlistId/deletesong/:songIndex", isAuthenticated, async
   res.redirect(`/playlist/${playlist._id}`);
 });
 // Show Edit Form
-router.get('/playlist/:id/edit', isAuthenticated, async (req, res) => {
-  try {
-    const playlist = await playlistModel.findOne({ _id: req.params.id, user: req.user._id });
-    if (!playlist) return res.status(403).send("Unauthorized or Playlist not found");
-    res.render('editPlaylist', { playlist });
-  } catch (err) {
-    res.status(500).send("Error loading edit form");
-  }
+// Example route in playlistRoutes.js
+router.get("/playlist/:id/edit", isAuthenticated, async (req, res) => {
+  const playlist = await playlistModel.findOne({ _id: req.params.id, user: req.user._id });
+  if (!playlist) return res.status(403).send("Unauthorized or Playlist not found");
+  res.render("editPlaylist", { playlist, user: req.user }); // <-- Pass user here
 });
 
 // Update Playlist
